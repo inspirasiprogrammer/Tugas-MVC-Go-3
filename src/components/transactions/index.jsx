@@ -10,6 +10,7 @@ import "../transactions/style.scss"
 import { logout } from '../../actions/userActions';
 import { deposit, withdrawal, transfer, saldo } from '../../actions/transactionActions';
 
+
 const Transactions = ({ history }) => {
   const dispatch = useDispatch();
 
@@ -109,17 +110,23 @@ const Transactions = ({ history }) => {
           <div className="d-flex justify-content-center my-4">
             <h1>DEPOSIT</h1>
           </div>
-          <div className="mb-5">
-            <h4>Total Saldo : {saldoTotal != null && saldoTotal.account ? saldoTotal.account.saldo : 0} </h4>
+          <div className="mb-5">            
+            <h4>Selamat Datang Kembali {saldoTotal != null && saldoTotal.account ? saldoTotal.account.name : 0} </h4>            
+            <h4>Account Number anda adalah {saldoTotal != null && saldoTotal.account ? saldoTotal.account.account_number : 0} </h4>          
+            <h4>Sisa Saldo anda adalah {new Intl.NumberFormat('IDN', {
+                                style: 'currency',
+                                currency: 'IDR'
+                              }).format(saldoTotal != null && saldoTotal.account ? saldoTotal.account.saldo : 0)}
+            </h4>          
           </div>
           <Form onSubmit={submitDepositHandler} className="mt-3">
             <Form.Group as={Row} controlId="formPlaintextAccount">
               <Form.Label column sm="2">
                 Account Number
               </Form.Label>
-              <Col sm="10">
+              <Col sm="10">                
                 <Form.Control
-                  type="account"
+                  type="account" 
                   value={accountDeposit}
                   onChange={(e) => setAccountDeposit(e.target.value)}
                   placeholder="Input the destination account number"
@@ -160,11 +167,17 @@ const Transactions = ({ history }) => {
         </TabPanel>
         <TabPanel>
           <div className="d-flex justify-content-center my-4">
-            <h1>WITHDRAWAL</h1>
+            <h1>WITHDRAWAL</h1>            
           </div>
-          {/* <div className="mb-5">
-            <h4>Total Saldo : {saldoTotal.account.saldo} </h4>
-          </div> */}
+          <div className="mb-5">            
+            <h4>Selamat Datang Kembali {saldoTotal != null && saldoTotal.account ? saldoTotal.account.name : 0} </h4>            
+            <h4>Account Number anda adalah {saldoTotal != null && saldoTotal.account ? saldoTotal.account.account_number : 0} </h4>          
+            <h4>Sisa Saldo anda adalah {new Intl.NumberFormat('IDN', {
+                                style: 'currency',
+                                currency: 'IDR'
+                              }).format(saldoTotal != null && saldoTotal.account ? saldoTotal.account.saldo : 0)}
+            </h4>          
+          </div>
           <Form onSubmit={submitWithdrawalHandler} className="mt-3">
             <Form.Group as={Row} controlId="formPlaintextAccountWithdraw">
               <Form.Label column sm="2">
@@ -219,9 +232,16 @@ const Transactions = ({ history }) => {
           <div className="d-flex justify-content-center my-4">
             <h1>TRANSFER</h1>
           </div>
-          {/* <div className="mb-5">
-            <h4>Total Saldo : {saldoTotal.account.saldo} </h4>
-          </div> */}
+          <div className="mb-5">            
+            <h4>Selamat Datang Kembali {saldoTotal != null && saldoTotal.account ? saldoTotal.account.name : 0} </h4>            
+            <h4>Account Number anda adalah {saldoTotal != null && saldoTotal.account ? saldoTotal.account.account_number : 0} </h4>          
+            <h4>Sisa Saldo anda adalah {new Intl.NumberFormat('IDN', {
+                                style: 'currency',
+                                currency: 'IDR'
+                              }).format(saldoTotal != null && saldoTotal.account ? saldoTotal.account.saldo : 0)}
+            </h4>          
+          </div>
+          
           <Form onSubmit={submitTransferHandler} className="mt-3">
             <Form.Group as={Row} controlId="formPlaintextRecepient">
               <Form.Label column sm="2">
@@ -273,7 +293,21 @@ const Transactions = ({ history }) => {
           </Form>
         </TabPanel>
         <TabPanel>
-          {/* isi code mutasi rekening disini */}
+          {/* isi code mutasi rekening disini */
+          
+          }
+          <div className="d-flex justify-content-center my-4">
+            <h1>MUTASI</h1>
+          </div>
+          
+          <div className="mb-5">                                  
+            <h4>Sisa Saldo anda adalah {new Intl.NumberFormat('IDN', {
+                                style: 'currency',
+                                currency: 'IDR'
+                              }).format(saldoTotal != null && saldoTotal.account ? saldoTotal.account.saldo : 0)}
+            </h4>          
+          </div>
+          
         </TabPanel>
       </Tabs>
     </Container>

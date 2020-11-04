@@ -32,7 +32,7 @@ export const deposit = (accountDeposit, amountDeposit, descDeposit) => async(dis
             },
         };
         console.log(token)
-        const { data: { data } } = await axios.post("http://localhost:8080/api/v1/deposit/", { accountDeposit, amountDeposit, descDeposit }, config)
+        const { data: { data } } = await axios.post("http://localhost:8080/api/v1/deposit", { accountDeposit, amountDeposit, descDeposit }, config)
         dispatch({
             type: TRANSACTION_DEPOSIT_SUCCESS,
             payload: data,
@@ -68,7 +68,7 @@ export const withdrawal = (accountWithdrawal, amountWithdrawal, descWithdrawal) 
                 Authorization: `${token}`,
             },
         };
-        const { data: { data } } = await axios.post("http://localhost:8080/api/v1/withdraw/", { accountWithdrawal, amountWithdrawal, descWithdrawal }, config);
+        const { data: { data } } = await axios.post("http://localhost:8080/api/v1/withdraw", { accountWithdrawal, amountWithdrawal, descWithdrawal }, config);
         dispatch({
             type: TRANSACTION_WITHDRAWAL_SUCCESS,
             payload: data,
@@ -104,7 +104,7 @@ export const transfer = (accountTransfer, amountTransfer, descTransfer) => async
                 Authorization: `${token}`,
             },
         };
-        const { data: { data } } = await axios.post("http://localhost:8080/api/v1/transfer/", { accountTransfer, amountTransfer, descTransfer }, config);
+        const { data: { data } } = await axios.post("http://localhost:8080/api/v1/transfer", { accountTransfer, amountTransfer, descTransfer }, config);
         dispatch({
             type: TRANSACTION_TRANSFER_SUCCESS,
             payload: data,
@@ -139,7 +139,7 @@ export const saldo = () => async(dispatch, getState) => {
             },
         }
 
-        const { data: { data } } = await axios.get(`http://localhost:8080/api/v1/account/`, config)
+        const { data: { data } } = await axios.get(`http://localhost:8080/api/v1/account`, config)
 
         dispatch({
             type: TRANSACTION_SALDO_SUCCESS,

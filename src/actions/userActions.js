@@ -50,7 +50,7 @@ export const register = (name, password) => async(dispatch) => {
             },
         };
 
-        const { data } = await axios.post("http://localhost:8080/api/v1/account/add/", { name, password }, config);
+        const { data } = await axios.post("http://localhost:8080/api/v1/account/add", { name, password }, config);
 
         dispatch({
             type: USER_REGISTER_SUCCESS,
