@@ -12,10 +12,10 @@ import {
     TRANSACTION_SALDO_REQUEST,
     TRANSACTION_SALDO_SUCCESS,
     TRANSACTION_SALDO_FAIL,
-  } from "../constants/transactionConstants";
-  import { logout } from './userActions'
+} from "../constants/transactionConstants";
+import { logout } from './userActions'
 
-export const deposit = (accountDeposit, amountDeposit, descDeposit) => async (dispatch, getState) => {
+export const deposit = (accountDeposit, amountDeposit, descDeposit) => async(dispatch, getState) => {
     try {
         dispatch({
             type: TRANSACTION_DEPOSIT_REQUEST,
@@ -27,32 +27,32 @@ export const deposit = (accountDeposit, amountDeposit, descDeposit) => async (di
 
         const config = {
             headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
+                "Content-Type": "application/json",
+                Authorization: `${token}`,
             },
         };
         console.log(token)
-        const { data : {data} } = await axios.post("/api/v1/deposit", { accountDeposit, amountDeposit, descDeposit }, config)
+        const { data: { data } } = await axios.post("http://localhost:8080/api/v1/deposit", { accountDeposit, amountDeposit, descDeposit }, config)
         dispatch({
             type: TRANSACTION_DEPOSIT_SUCCESS,
             payload: data,
         })
     } catch (error) {
         const message =
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
         if (message === 'Not authorized, token failed') {
-          dispatch(logout())
+            dispatch(logout())
         }
         dispatch({
-          type: TRANSACTION_DEPOSIT_FAIL,
-          payload: message,
+            type: TRANSACTION_DEPOSIT_FAIL,
+            payload: message,
         })
     }
 };
 
-export const withdrawal = (accountWithdrawal, amountWithdrawal, descWithdrawal) => async (dispatch, getState) => {
+export const withdrawal = (accountWithdrawal, amountWithdrawal, descWithdrawal) => async(dispatch, getState) => {
     try {
         dispatch({
             type: TRANSACTION_WITHDRAWAL_REQUEST,
@@ -64,31 +64,31 @@ export const withdrawal = (accountWithdrawal, amountWithdrawal, descWithdrawal) 
 
         const config = {
             headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
+                "Content-Type": "application/json",
+                Authorization: `${token}`,
             },
         };
-        const { data: {data} } = await axios.post("/api/v1/withdraw", { accountWithdrawal, amountWithdrawal, descWithdrawal }, config);
+        const { data: { data } } = await axios.post("http://localhost:8080/api/v1/withdraw", { accountWithdrawal, amountWithdrawal, descWithdrawal }, config);
         dispatch({
             type: TRANSACTION_WITHDRAWAL_SUCCESS,
             payload: data,
         })
     } catch (error) {
         const message =
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
         if (message === 'Not authorized, token failed') {
-          dispatch(logout())
+            dispatch(logout())
         }
         dispatch({
-          type: TRANSACTION_WITHDRAWAL_FAIL,
-          payload: message,
+            type: TRANSACTION_WITHDRAWAL_FAIL,
+            payload: message,
         })
     }
 };
 
-export const transfer = (accountTransfer, amountTransfer, descTransfer) => async (dispatch, getState) => {
+export const transfer = (accountTransfer, amountTransfer, descTransfer) => async(dispatch, getState) => {
     try {
         dispatch({
             type: TRANSACTION_TRANSFER_REQUEST,
@@ -100,63 +100,62 @@ export const transfer = (accountTransfer, amountTransfer, descTransfer) => async
 
         const config = {
             headers: {
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
+                "Content-Type": "application/json",
+                Authorization: `${token}`,
             },
         };
-        const { data: {data} } = await axios.post("/api/v1/transfer", { accountTransfer, amountTransfer, descTransfer }, config);
+        const { data: { data } } = await axios.post("http://localhost:8080/api/v1/transfer", { accountTransfer, amountTransfer, descTransfer }, config);
         dispatch({
             type: TRANSACTION_TRANSFER_SUCCESS,
             payload: data,
         })
     } catch (error) {
         const message =
-          error.response && error.response.data.message
-            ? error.response.data.message
-            : error.message
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
         if (message === 'Not authorized, token failed') {
-          dispatch(logout())
+            dispatch(logout())
         }
         dispatch({
-          type: TRANSACTION_TRANSFER_FAIL,
-          payload: message,
+            type: TRANSACTION_TRANSFER_FAIL,
+            payload: message,
         })
     }
 };
-export const saldo = () => async (dispatch, getState) => {
+export const saldo = () => async(dispatch, getState) => {
     try {
-      dispatch({
-        type: TRANSACTION_SALDO_REQUEST,
-      })
-  
-      const {
-        userLogin: { token },
-      } = getState()
-  
-      const config = {
-        headers: {
-          Authorization: `${token}`,
-        },
-      }
-  
-      const { data: {data} } = await axios.get(`/api/v1/account`, config)
-  
-      dispatch({
-        type: TRANSACTION_SALDO_SUCCESS,
-        payload: data,
-      })
+        dispatch({
+            type: TRANSACTION_SALDO_REQUEST,
+        })
+
+        const {
+            userLogin: { token },
+        } = getState()
+
+        const config = {
+            headers: {
+                Authorization: `${token}`,
+            },
+        }
+
+        const { data: { data } } = await axios.get(`http://localhost:8080/api/v1/account`, config)
+
+        dispatch({
+            type: TRANSACTION_SALDO_SUCCESS,
+            payload: data,
+        })
     } catch (error) {
-      const message =
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message
-      if (message === 'Not authorized, token failed') {
-        dispatch(logout())
-      }
-      dispatch({
-        type: TRANSACTION_SALDO_FAIL,
-        payload: message,
-      })
+        const message =
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout())
+        }
+        dispatch({
+            type: TRANSACTION_SALDO_FAIL,
+            payload: message,
+        })
     }
-  }
-  
+}
