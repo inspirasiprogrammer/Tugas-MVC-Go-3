@@ -8,8 +8,7 @@ import userImg from "../../assets/user.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../transactions/style.scss"
 import { logout } from '../../actions/userActions';
-import { deposit, withdrawal, transfer, saldo, mutasi } from '../../actions/transactionActions';
-
+import { deposit, withdrawal, transfer, saldo } from '../../actions/transactionActions'
 
 const Transactions = ({ history }) => {
   const dispatch = useDispatch();
@@ -22,10 +21,8 @@ const Transactions = ({ history }) => {
   const userLogin = useSelector((state) => state.userLogin)
   const { token } = userLogin
 
-  const [accountDeposit, setAccountDeposit] = useState("");
   const [amountDeposit, setAmountDeposit] = useState("");
   const [descDeposit, setDescDeposit] = useState("");
-  const [accountWithdrawal, setAccountWithdrawal] = useState("");
   const [amountWithdrawal, setAmountWithdrawal] = useState("");
   const [descWithdrawal, setDescWithdrawal] = useState("");
   const [accountTransfer, setAccountTransfer] = useState("");
@@ -33,10 +30,8 @@ const Transactions = ({ history }) => {
   const [descTransfer, setDescTransfer] = useState("");
 
   useEffect(() => {
-    setAccountDeposit("");
     setAmountDeposit("");
     setDescDeposit("");
-    setAccountWithdrawal("");
     setAmountWithdrawal("");
     setDescWithdrawal("");
     setAccountTransfer("");
@@ -47,30 +42,28 @@ const Transactions = ({ history }) => {
   useEffect(() => {
     if (token) {
       dispatch(saldo())
-    } 
-  }, [dispatch, history, token])
-
-  useEffect(() => {
-    if (token) {
-      dispatch(mutasi())
-    } 
-  }, [dispatch, token])
+    }
+  }, [dispatch, history,token])
 
   const transactionSaldo = useSelector((state) => state.transactionSaldo)
   const { saldoTotal } = transactionSaldo
+  const accountDeposit = saldoTotal?.account?.account_number
+  const accountWithdrawal = saldoTotal?.account?.account_number
+  const accountTransferSender = saldoTotal?.account?.account_number
 
   const submitDepositHandler = (e) => {
     e.preventDefault();
     dispatch(deposit(accountDeposit, amountDeposit, descDeposit));
-  };
+  }
   const submitWithdrawalHandler = (e) => {
     e.preventDefault();
     dispatch(withdrawal(accountWithdrawal, amountWithdrawal, descWithdrawal));
-  };
+  }
   const submitTransferHandler = (e) => {
     e.preventDefault();
-    dispatch(transfer(accountTransfer, amountTransfer, descTransfer));
-  };
+    dispatch(transfer(accountTransfer, accountTransferSender, amountTransfer, descTransfer));
+  }
+
   
   return (
     <Container>
@@ -116,29 +109,16 @@ const Transactions = ({ history }) => {
           <div className="d-flex justify-content-center my-4">
             <h1>DEPOSIT</h1>
           </div>
-          <div className="mb-5">            
+          <div className="mb-5">
             <h4>Selamat Datang Kembali {saldoTotal != null && saldoTotal.account ? saldoTotal.account.name : 0} </h4>            
             <h4>Account Number anda adalah {saldoTotal != null && saldoTotal.account ? saldoTotal.account.account_number : 0} </h4>          
             <h4>Sisa Saldo anda adalah {new Intl.NumberFormat('IDN', {
                                 style: 'currency',
                                 currency: 'IDR'
                               }).format(saldoTotal != null && saldoTotal.account ? saldoTotal.account.saldo : 0)}
-            </h4>          
+            </h4>
           </div>
           <Form onSubmit={submitDepositHandler} className="mt-3">
-            <Form.Group as={Row} controlId="formPlaintextAccount">
-              <Form.Label column sm="2">
-                Account Number
-              </Form.Label>
-              <Col sm="10">                
-                <Form.Control
-                  type="account" 
-                  value={accountDeposit}
-                  onChange={(e) => setAccountDeposit(e.target.value)}
-                  placeholder="Input the destination account number"
-                />
-              </Col>
-            </Form.Group>
             <Form.Group as={Row} controlId="formPlaintextAmount">
               <Form.Label column sm="2">
                 Total Amount
@@ -146,9 +126,10 @@ const Transactions = ({ history }) => {
               <Col sm="10">
                 <Form.Control 
                   type="amount" 
+                  placeholder="Input the amount" 
                   value={amountDeposit}
                   onChange={(e) => setAmountDeposit(e.target.value)}
-                  placeholder="Input the amount" />
+                />
               </Col>
             </Form.Group>
             <Form.Group as={Row} controlId="exampleForm.ControlTextareaDesc">
@@ -158,9 +139,9 @@ const Transactions = ({ history }) => {
               <Col sm="10">
                 <Form.Control 
                   as="textarea" 
-                  rows={3} 
+                  rows={3}
                   value={descDeposit}
-                  onChange={(e) => setDescDeposit(e.target.value)}
+                  onChange={(e) => setDescDeposit(e.target.value)} 
                 />
               </Col>
             </Form.Group>
@@ -173,31 +154,19 @@ const Transactions = ({ history }) => {
         </TabPanel>
         <TabPanel>
           <div className="d-flex justify-content-center my-4">
-            <h1>WITHDRAWAL</h1>            
+            <h1>WITHDRAWAL</h1>
           </div>
-          <div className="mb-5">            
+          <div className="mb-5">
             <h4>Selamat Datang Kembali {saldoTotal != null && saldoTotal.account ? saldoTotal.account.name : 0} </h4>            
             <h4>Account Number anda adalah {saldoTotal != null && saldoTotal.account ? saldoTotal.account.account_number : 0} </h4>          
             <h4>Sisa Saldo anda adalah {new Intl.NumberFormat('IDN', {
                                 style: 'currency',
                                 currency: 'IDR'
                               }).format(saldoTotal != null && saldoTotal.account ? saldoTotal.account.saldo : 0)}
-            </h4>          
+            </h4>         
+
           </div>
           <Form onSubmit={submitWithdrawalHandler} className="mt-3">
-            <Form.Group as={Row} controlId="formPlaintextAccountWithdraw">
-              <Form.Label column sm="2">
-                Account Number
-              </Form.Label>
-              <Col sm="10">
-                <Form.Control
-                  type="account"
-                  value={accountWithdrawal}
-                  onChange={(e) => setAccountWithdrawal(e.target.value)}
-                  placeholder="Input the destination account number"
-                />
-              </Col>
-            </Form.Group>
             <Form.Group as={Row} controlId="formPlaintextAmountWithdraw">
               <Form.Label column sm="2">
                 Total Amount
@@ -238,16 +207,15 @@ const Transactions = ({ history }) => {
           <div className="d-flex justify-content-center my-4">
             <h1>TRANSFER</h1>
           </div>
-          <div className="mb-5">            
+          <div className="mb-5">
             <h4>Selamat Datang Kembali {saldoTotal != null && saldoTotal.account ? saldoTotal.account.name : 0} </h4>            
             <h4>Account Number anda adalah {saldoTotal != null && saldoTotal.account ? saldoTotal.account.account_number : 0} </h4>          
             <h4>Sisa Saldo anda adalah {new Intl.NumberFormat('IDN', {
                                 style: 'currency',
                                 currency: 'IDR'
                               }).format(saldoTotal != null && saldoTotal.account ? saldoTotal.account.saldo : 0)}
-            </h4>          
+            </h4>         
           </div>
-          
           <Form onSubmit={submitTransferHandler} className="mt-3">
             <Form.Group as={Row} controlId="formPlaintextRecepient">
               <Form.Label column sm="2">
@@ -256,9 +224,9 @@ const Transactions = ({ history }) => {
               <Col sm="10">
                 <Form.Control
                   type="account"
+                  placeholder="Input the Recepient Account Number "
                   value={accountTransfer}
                   onChange={(e) => setAccountTransfer(e.target.value)}
-                  placeholder="Input the Recepient "
                 />
               </Col>
             </Form.Group>
@@ -318,11 +286,6 @@ const Transactions = ({ history }) => {
       </Tabs>
     </Container>
   );
-  // return (
-  //   <div>
-
-  //   </div>
-  // )
 }
 
 export default Transactions;
