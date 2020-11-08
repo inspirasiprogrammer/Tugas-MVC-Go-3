@@ -14,6 +14,9 @@ import {
     TRANSACTION_SALDO_REQUEST,
     TRANSACTION_SALDO_SUCCESS,
     TRANSACTION_SALDO_FAIL,
+    TRANSACTION_MUTASI_REQUEST,
+    TRANSACTION_MUTASI_SUCCESS,
+    TRANSACTION_MUTASI_FAIL,
 } from "../constants/transactionsConstant"
 
 export const transactionDepositReducer = (state = {}, action) => {
@@ -21,7 +24,7 @@ export const transactionDepositReducer = (state = {}, action) => {
         case TRANSACTION_DEPOSIT_REQUEST:
             return { loading: true };
         case TRANSACTION_DEPOSIT_SUCCESS:
-            return { loading: false, success:true, transaction: action.payload };
+            return { loading: false, success: true, transaction: action.payload };
         case TRANSACTION_DEPOSIT_FAIL:
             return { loading: false, error: action.payload }
         case TRANSACTION_DEPOSIT_RESET:
@@ -36,7 +39,7 @@ export const transactionWithdrawalReducer = (state = {}, action) => {
         case TRANSACTION_WITHDRAWAL_REQUEST:
             return { loading: true };
         case TRANSACTION_WITHDRAWAL_SUCCESS:
-            return { loading: false, success:true, transaction: action.payload };
+            return { loading: false, success: true, transaction: action.payload };
         case TRANSACTION_WITHDRAWAL_FAIL:
             return { loading: false, error: action.payload }
         case TRANSACTION_WITHDRAWAL_RESET:
@@ -51,7 +54,7 @@ export const transactionTransferReducer = (state = {}, action) => {
         case TRANSACTION_TRANSFER_REQUEST:
             return { loading: true };
         case TRANSACTION_TRANSFER_SUCCESS:
-            return { loading: false, success:true, transaction: action.payload };
+            return { loading: false, success: true, transaction: action.payload };
         case TRANSACTION_TRANSFER_FAIL:
             return { loading: false, error: action.payload }
         case TRANSACTION_TRANSFER_RESET:
@@ -66,8 +69,21 @@ export const transactionSaldoReducer = (state = { saldoTotal: {} }, action) => {
         case TRANSACTION_SALDO_REQUEST:
             return { loading: true };
         case TRANSACTION_SALDO_SUCCESS:
-            return { loading: false, success:true, saldoTotal: action.payload };
+            return { loading: false, success: true, saldoTotal: action.payload };
         case TRANSACTION_SALDO_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state;
+    }
+}
+
+export const transactionMutasiReducer = (state = { mutasiTotal: {} }, action) => {
+    switch (action.type) {
+        case TRANSACTION_MUTASI_REQUEST:
+            return { loading: true };
+        case TRANSACTION_MUTASI_SUCCESS:
+            return { loading: false, success: true, mutasiTotal: action.payload };
+        case TRANSACTION_MUTASI_FAIL:
             return { loading: false, error: action.payload }
         default:
             return state;

@@ -8,7 +8,7 @@ import userImg from "../../assets/user.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../transactions/style.scss"
 import { logout } from '../../actions/userActions';
-import { deposit, withdrawal, transfer, saldo } from '../../actions/transactionActions'
+import { deposit, withdrawal, transfer, saldo, mutasi } from '../../actions/transactionActions'
 
 const Transactions = ({ history }) => {
   const dispatch = useDispatch();
@@ -45,8 +45,17 @@ const Transactions = ({ history }) => {
     }
   }, [dispatch, history,token])
 
+  useEffect(() => {
+    if (token) {
+      dispatch(mutasi())
+    }
+  }, [dispatch, token])
+  
   const transactionSaldo = useSelector((state) => state.transactionSaldo)
+  const transactionMutasi = useSelector((state) => state.transactionMutasi)
   const { saldoTotal } = transactionSaldo
+  const { mutasiTotal } = transactionMutasi
+  const accountTransaction = saldoTotal?.transaction
   const accountDeposit = saldoTotal?.account?.account_number
   const accountWithdrawal = saldoTotal?.account?.account_number
   const accountTransferSender = saldoTotal?.account?.account_number
@@ -281,7 +290,37 @@ const Transactions = ({ history }) => {
                               }).format(saldoTotal != null && saldoTotal.account ? saldoTotal.account.saldo : 0)}
             </h4>          
           </div>
-          
+        
+          <table className="tab1e table—striped">
+            <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Tipe</th>            
+                <th scope="col">Sender</th>
+                <th scope="col">Recipient</th>   
+                <th scope="col">Keterangan</th>
+                <th scope="col">Amount</th>                         
+            </tr>
+            </thead>
+            <tbody>
+            {mutasiTotal !== null && accountTransaction ? accountTransaction.map((item, index) => {
+            return (
+              <tr key={index}>
+                <th scope="row">{new Date(item.timestamp).toUTCString()}</th>
+                <td>{item.transaction_type === 1 ? "Withdrawal" :
+                    item.transaction_type === 2 ? "Deposit" :
+                    item.transaction_type === 0 ? "Transfer" : "Transfer"}</td>
+                <td>{item.sender}</td>
+                <td>{item.recipient}</td>                
+                <td>{item.transaction_description}</td>                
+                <td>{new Intl.NumberFormat('IDN', {
+                                style: 'currency',
+                                currency: 'IDR'
+                              }).format(item.amount)}</td>                
+              </tr>)
+            }) : "do error"}
+            </tbody>
+          </table>             
         </TabPanel>
       </Tabs>
     </Container>
