@@ -8,7 +8,7 @@ import userImg from "../../assets/user.png";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../transactions/style.scss"
 import { logout } from '../../actions/userActions';
-import { deposit, withdrawal, transfer, saldo } from '../../actions/transactionActions';
+import { deposit, withdrawal, transfer, saldo, mutasi } from '../../actions/transactionActions';
 
 
 const Transactions = ({ history }) => {
@@ -49,6 +49,12 @@ const Transactions = ({ history }) => {
       dispatch(saldo())
     } 
   }, [dispatch, history, token])
+
+  useEffect(() => {
+    if (token) {
+      dispatch(mutasi())
+    } 
+  }, [dispatch, token])
 
   const transactionSaldo = useSelector((state) => state.transactionSaldo)
   const { saldoTotal } = transactionSaldo

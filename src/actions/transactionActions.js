@@ -12,6 +12,9 @@ import {
     TRANSACTION_SALDO_REQUEST,
     TRANSACTION_SALDO_SUCCESS,
     TRANSACTION_SALDO_FAIL,
+    TRANSACTION_MUTASI_REQUEST,
+    TRANSACTION_MUTASI_SUCCESS,
+    TRANSACTION_MUTASI_FAIL,
 } from "../constants/transactionConstants";
 import { logout } from './userActions'
 
@@ -155,6 +158,43 @@ export const saldo = () => async(dispatch, getState) => {
         }
         dispatch({
             type: TRANSACTION_SALDO_FAIL,
+            payload: message,
+        })
+    }
+}
+
+export const mutasi = () => async(dispatch, getState) => {
+    try {
+        dispatch({
+            type: TRANSACTION_MUTASI_REQUEST,
+        })
+
+        const {
+            userLogin: { token },
+        } = getState()
+
+        const config = {
+            headers: {
+                Authorization: `${token}`,
+            },
+        }
+
+        const { data: { data } } = await axios.get(`http://localhost:8080/api/v1/mutasi`, config)
+
+        dispatch({
+            type: TRANSACTION_MUTASI_SUCCESS,
+            payload: data,
+        })
+    } catch (error) {
+        const message =
+            error.response && error.response.data.message ?
+            error.response.data.message :
+            error.message
+        if (message === 'Not authorized, token failed') {
+            dispatch(logout())
+        }
+        dispatch({
+            type: TRANSACTION_MUTASI_FAIL,
             payload: message,
         })
     }
