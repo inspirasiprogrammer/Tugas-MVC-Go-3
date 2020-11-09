@@ -34,7 +34,7 @@ export const deposit = (accountDeposit, amountDeposit, descDeposit) => async(dis
                 Authorization: `${token}`,
             },
         };
-        const { data: { data } } = await axios.post("http://localhost:8080/api/v1/deposit", {
+        const { data: { data } } = await axios.post("http://localhost:8081/api/v1/deposit", {
             transaction_type: 1,
             transaction_description: descDeposit,
             sender: parseInt(accountDeposit),
@@ -78,7 +78,7 @@ export const withdrawal = (accountWithdrawal, amountWithdrawal, descWithdrawal) 
                 Authorization: `${token}`,
             },
         };
-        const { data: { data } } = await axios.post("http://localhost:8080/api/v1/withdraw", {
+        const { data: { data } } = await axios.post("http://localhost:8081/api/v1/withdraw", {
             transaction_type: 1,
             transaction_description: descWithdrawal,
             sender: parseInt(accountWithdrawal),
@@ -122,7 +122,7 @@ export const transfer = (accountTransfer, accountTransferSender, amountTransfer,
                 Authorization: `${token}`,
             },
         };
-        const { data: { data } } = await axios.post("http://localhost:8080/api/v1/transfer", {
+        const { data: { data } } = await axios.post("http://localhost:8081/api/v1/transfer", {
             transaction_type: 0,
             transaction_description: descTransfer,
             sender: parseInt(accountTransferSender),
@@ -166,7 +166,7 @@ export const saldo = () => async(dispatch, getState) => {
                 Authorization: `${token}`,
             },
         };
-        const { data: { data } } = await axios.get("http://localhost:8080/api/v1/account", config)
+        const { data: { data } } = await axios.get("http://localhost:8081/api/v1/account", config)
         dispatch({
             type: TRANSACTION_SALDO_SUCCESS,
             payload: data,
@@ -202,7 +202,7 @@ export const mutasi = () => async(dispatch, getState) => {
                 Authorization: `${token}`,
             },
         };
-        const { data: { data } } = await axios.get("http://localhost:8080/api/v1/mutasi", config)
+        const { data: { data } } = await axios.get("http://localhost:8081/api/v1/mutasi", config)
         dispatch({
             type: TRANSACTION_MUTASI_SUCCESS,
             payload: data,
